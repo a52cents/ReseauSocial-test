@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { Component } from "react";
 import { initializeApp } from "firebase/app";
@@ -17,39 +18,39 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 export class LoginScreen extends Component {
-
   state = {
     email: "",
     password: "",
-    errorMessage:null
-  }
+    errorMessage: null,
+  };
 
-  handleLogin= () => {
-    const {email, password} = this.state;
+  handleLogin = () => {
+    const { email, password } = this.state;
 
-     signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user)
-    
-
-      
-    })
-    .catch((error) => {
-      
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      this.setState({ errorMessage: errorMessage });
-    });
-  }
+    signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        this.setState({ errorMessage: errorMessage });
+      });
+  };
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled" // Assurez-vous d'ajouter cette ligne
+      >
         <View>
-          <Text  style={styles.greeting}>{"Hello again.\nWelcome Back !"}</Text>
+          <Text style={styles.greeting}>{"Hello again.\nWelcome Back !"}</Text>
         </View>
         <View style={styles.errorMessage}>
           <Text style={styles.error}> {this.state.errorMessage} </Text>
@@ -65,7 +66,7 @@ export class LoginScreen extends Component {
                 style={styles.input}
                 placeholder="Email"
                 autoCapitalize="none"
-                onChangeText={email => this.setState({ email })}
+                onChangeText={(email) => this.setState({ email })}
                 value={this.state.email}
               ></TextInput>
             </ImageBackground>
@@ -82,8 +83,8 @@ export class LoginScreen extends Component {
                 placeholder="password"
                 autoCapitalize="none"
                 secureTextEntry={true}
-                onChangeText={password => this.setState({ password})}
-                value={this.setState.password}
+                onChangeText={(password) => this.setState({ password })}
+                value={this.state.password}
               ></TextInput>
             </ImageBackground>
           </View>
@@ -95,14 +96,17 @@ export class LoginScreen extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.form}>
-            <TouchableOpacity style={styles.button} onPress={this.props}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Register")}
+            >
               <Text style={{ color: "black", fontWeight: "600", fontSize: 18 }}>
                 Sign Up
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -114,8 +118,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#00000",
   },
   buttonBg: {
-    position: "absolute",
-    bottom: -20,
+    position: "relative",
+    bottom: -65,
     width: "100%",
     height: 684,
     backgroundColor: "#000000",
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     textAlign: "center",
-    
   },
   inputTitle: {
     color: "#FFFFFF", // Blanc
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
   form: {
     bottom: 0,
     marginVertical: -100,
-    marginTop:130,
+    marginTop: 130,
   },
   inputImage: {
     width: 327,
