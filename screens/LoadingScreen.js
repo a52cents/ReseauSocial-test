@@ -28,7 +28,7 @@ export class LoadingScreen extends Component {
             <ActivityIndicator size="large" color="#CBC3E3" />
           </View>
           <View style={styles.label}>
-          <Text style={styles.textLabel}>React. by <Text style={styles.textHighlight}>@ziouut</Text></Text>
+          <Text style={styles.textLabel}>!React. by <Text style={styles.textHighlight}>@ziouut</Text></Text>
         </View>
         </View>
       );
