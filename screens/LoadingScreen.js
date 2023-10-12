@@ -1,6 +1,9 @@
 import {  Text, View, StyleSheet, ActivityIndicator,Image, TextInput, Button, Animated } from 'react-native'
 import React, { Component } from 'react'
-
+import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../FirebaseConfig';
+import { auth } from '../FirebaseConfig';
 
 export class LoadingScreen extends Component {
     constructor(props) {
@@ -14,13 +17,23 @@ export class LoadingScreen extends Component {
         duration: 2001, // Durée de l'animation (en millisecondes)
         useNativeDriver: true, // Utiliser le driver natif pour les performances
       }).start();
+      
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.props.navigation.navigate('Home');
+        } else {
+          this.props.navigation.navigate('Login');
+        }
+      });
+      
+   
     }
   
     render() {
       const imageStyle = {
         opacity: this.imageOpacity,
       };
-  
+      
       return (
         <View style={styles.container}>
           <Animated.Image source={require('../assets/logo.png')} style={[styles.image]} />
@@ -28,7 +41,7 @@ export class LoadingScreen extends Component {
             <ActivityIndicator size="large" color="#CBC3E3" />
           </View>
           <View style={styles.label}>
-          <Text style={styles.textLabel}>!React. by <Text style={styles.textHighlight}>@ziouut</Text></Text>
+          <Text style={[styles.textLabel, styles.textHighlight]}>!React. by <Text style={styles.textLabel}>me</Text></Text>
         </View>
         </View>
       );
