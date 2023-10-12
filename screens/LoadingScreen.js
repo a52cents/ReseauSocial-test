@@ -16,7 +16,8 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../FirebaseConfig";
-import { auth } from "../FirebaseConfig";
+import { FIREBASE_APP } from "../FirebaseConfig";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
 
 export class LoadingScreen extends Component {
   constructor(props) {
@@ -31,13 +32,15 @@ export class LoadingScreen extends Component {
       useNativeDriver: true, // Utiliser le driver natif pour les performances
     }).start();
 
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.props.navigation.navigate("Home");
-      } else {
-        this.props.navigation.navigate("Login");
-      }
-    });
+    setTimeout(() => {
+      FIREBASE_AUTH.onAuthStateChanged((user) => {
+        if (user) {
+          this.props.navigation.navigate("Home");
+        } else {
+          this.props.navigation.navigate("Login");
+        }
+      });
+    }, 2000);
   }
 
   render() {

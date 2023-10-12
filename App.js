@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoadingScreen from './screens/LoadingScreen';
 import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 export default function App() {
 
 
@@ -17,6 +18,8 @@ export default function App() {
         <stack.Navigator>
           <stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
           <stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
+          <stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}} />
+
         </stack.Navigator>
 
       <StatusBar style="auto" />

@@ -10,7 +10,8 @@ import {
 import React, { Component } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../FirebaseConfig";
-import { auth } from "../FirebaseConfig";
+import { FIREBASE_APP } from "../FirebaseConfig";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -27,17 +28,31 @@ export class LoginScreen extends Component {
 
   handleLogin= () => {
     const {email, password} = this.state;
-     firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {error.message});
+
+     signInWithEmailAndPassword(FIREBASE_AUTH, email, password).then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user)
+    
+
+      
+    })
+    .catch((error) => {
+      
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      this.setState({ errorMessage: errorMessage });
+    });
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View>
-          <Text style={styles.greeting}>{"Hello again.\nWelcome Back !"}</Text>
+          <Text  style={styles.greeting}>{"Hello again.\nWelcome Back !"}</Text>
         </View>
         <View style={styles.errorMessage}>
-          {this.state.errorMessage && <Text style={styles.error}> {this.state.errorMessage} </Text>}
+          <Text style={styles.error}> {this.state.errorMessage} </Text>
         </View>
         <View style={styles.buttonBg}>
           <View style={styles.form}>
@@ -73,14 +88,14 @@ export class LoginScreen extends Component {
             </ImageBackground>
           </View>
           <View style={styles.form}>
-            <TouchableOpacity style={styles.button} onPress={this.handleLogin()}>
+            <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
               <Text style={{ color: "black", fontWeight: "600", fontSize: 18 }}>
                 Login
               </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.form}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={this.props}>
               <Text style={{ color: "black", fontWeight: "600", fontSize: 18 }}>
                 Sign Up
               </Text>
@@ -105,7 +120,7 @@ const styles = StyleSheet.create({
     height: 684,
     backgroundColor: "#000000",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     borderRadius: 24,
   },
   greeting: {
@@ -120,12 +135,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 30,
     position: "absolute",
+    top: 60,
   },
   error: {
-    color: "#E9446A",
+    color: "black",
     fontSize: 13,
     fontWeight: "600",
     textAlign: "center",
+    
   },
   inputTitle: {
     color: "#FFFFFF", // Blanc
@@ -144,7 +161,8 @@ const styles = StyleSheet.create({
   },
   form: {
     bottom: 0,
-    marginVertical: 8,
+    marginVertical: -100,
+    marginTop:130,
   },
   inputImage: {
     width: 327,
