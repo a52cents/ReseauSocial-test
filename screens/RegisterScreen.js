@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { Component } from "react";
 import { initializeApp } from "firebase/app";
@@ -31,24 +32,10 @@ export class RegisterScreen extends Component {
   handleSignUp = () => {
     const { name, email, password } = this.state;
     createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-    .then((userCredential) => {
-      return userCredential.user.updateProfile({
-          displayName: name
-      });
-    }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        this.setState({ errorMessage: errorMessage });
-      });
-  }
-  handleLogin = () => {
-    const { email, password } = this.state;
-
-    signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
+        return userCredential.user.updateProfile({
+          displayName: name,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -56,13 +43,11 @@ export class RegisterScreen extends Component {
         this.setState({ errorMessage: errorMessage });
       });
   };
+  
 
   render() {
     return (
-        <KeyboardAwareScrollView
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps="handled" // Assurez-vous d'ajouter cette ligne
-      >
+      <KeyboardAvoidingView style={styles.container}>
         <View>
           <Text style={styles.greeting}>
             {"Hello.\nSign Up to get started !"}
@@ -71,8 +56,16 @@ export class RegisterScreen extends Component {
         <View style={styles.errorMessage}>
           <Text style={styles.error}> {this.state.errorMessage} </Text>
         </View>
-        <View style={styles.buttonBg}>
-
+        <ScrollView 
+          contentContainerStyle={styles.buttonBg}
+          style={{ width: "100%" }}
+          >
+            <TouchableOpacity>
+            <ImageBackground
+              source={require("../assets/logo.png")}
+              style={styles.logo}
+            />
+          </TouchableOpacity>
           <View style={styles.form}>
             <Text style={styles.inputTitle}>Username</Text>
             <ImageBackground
@@ -131,15 +124,23 @@ export class RegisterScreen extends Component {
           </View>
 
           <View style={styles.form}>
-            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate("Login")}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
               <Text style={{ color: "black", fontWeight: "600", fontSize: 18 }}>
                 Login ?
               </Text>
             </TouchableOpacity>
+            
           </View>
-
-        </View>
-      </KeyboardAwareScrollView>
+          <View style={styles.label}>
+            <Text style={[styles.textLabel, ]}>
+              !React. by <Text style={[styles.textLabel,styles.textHighlight]}>@ziouut</Text>
+            </Text>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -148,7 +149,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#00000",
+    backgroundColor: "#000000",
+  },
+  logo: {
+    width: 117.692,
+    height: 120,
+    flexShrink: 0,
+  },
+  
+  textLabel: {
+    color: "white",
+    fontFamily: "",
+    fontSize: 13,
+    fontWeight: "700",
+    left: 0,
+    letterSpacing: 0,
+    lineHeight: 30,
+  },
+  textHighlight: {
+    color: "#CBC3E3",
+  },
+  label: {
+    bottom: 30,
+    position: "absolute",
   },
   buttonBg: {
     position: "relative",
@@ -159,12 +182,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     borderRadius: 24,
+    flex:1
   },
   greeting: {
     marginTop: 32,
     fontSize: 18,
     fontWeight: "400",
     textAlign: "center",
+    color: "#FFFFFF", // Blanc
   },
   errorMessage: {
     height: 72,
@@ -175,7 +200,7 @@ const styles = StyleSheet.create({
     top: 60,
   },
   error: {
-    color: "black",
+    color: "white",
     fontSize: 13,
     fontWeight: "600",
     textAlign: "center",
@@ -197,8 +222,8 @@ const styles = StyleSheet.create({
   },
   form: {
     bottom: 0,
-    marginVertical: -100,
-    marginTop: 130,
+    marginVertical: -50,
+    marginTop: 60,
   },
   inputImage: {
     width: 327,

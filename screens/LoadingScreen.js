@@ -28,14 +28,18 @@ export class LoadingScreen extends Component {
   componentDidMount() {
     Animated.timing(this.imageOpacity, {
       toValue: 0,
-      duration: 2001, // Durée de l'animation (en millisecondes)
-      useNativeDriver: true, // Utiliser le driver natif pour les performances
+      duration: 2001,
+      useNativeDriver: true,
     }).start();
-
+  
     setTimeout(() => {
       FIREBASE_AUTH.onAuthStateChanged((user) => {
         if (user) {
-          this.props.navigation.navigate("Home");
+          const { email, displayName } = user;
+          this.props.navigation.navigate("Home", {
+            email: email,
+            displayName: displayName,
+          });
         } else {
           this.props.navigation.navigate("Login");
         }
@@ -58,10 +62,10 @@ export class LoadingScreen extends Component {
           <ActivityIndicator size="large" color="#CBC3E3" />
         </View>
         <View style={styles.label}>
-          <Text style={[styles.textLabel, styles.textHighlight]}>
-            !React. by <Text style={styles.textLabel}>me</Text>
-          </Text>
-        </View>
+            <Text style={[styles.textLabel, ]}>
+              !React. by <Text style={[styles.textLabel,styles.textHighlight]}>@ziouut</Text>
+            </Text>
+          </View>
       </View>
     );
   }

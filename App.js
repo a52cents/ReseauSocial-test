@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoadingScreen from './screens/LoadingScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import HomeScreen from './screens/HomeScreen';
 export default function App() {
 
 
@@ -19,6 +20,7 @@ export default function App() {
           <stack.Screen name="Loading" component={LoadingScreen} options={{headerShown: false}}/>
           <stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
           <stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}} />
+          <stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
 
         </stack.Navigator>
 
